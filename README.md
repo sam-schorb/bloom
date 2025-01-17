@@ -1,4 +1,4 @@
-# SVG Live Coding Environment
+# Bloom
 
 A simple live-coding playground for creating SVG art with JavaScript. This is very much a work in progress, but the core functionality lets you write and execute code in real-time to create SVG shapes.
 
