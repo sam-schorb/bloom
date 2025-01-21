@@ -1,23 +1,39 @@
+//app/page.js
+
 'use client';
 
 import Canvas from '@/components/Canvas';
+import CodeWindow from '@/components/CodeWindow';
 import Editor from '@/components/Editor';
 import { runCode } from '@/lib/Coderunner';
+import { formatSVGCode } from '@/lib/codeWindowUtils';
 import { useRef, useState } from 'react';
 
 export default function Home() {
   const [code, setCode] = useState('');
   const [error, setError] = useState(null);
+  const [showCode, setShowCode] = useState(false);
+  const [svgCode, setSvgCode] = useState('');
+  const [isRunning, setIsRunning] = useState(false);
   const canvasRef = useRef(null);
 
-  const handleRunCode = () => {
+  const handleRunCode = async () => {
+    if (!canvasRef.current || !code || isRunning) return;
+    setIsRunning(true);
     setError(null);
 
-    runCode({
-      code,
-      canvas: canvasRef.current,
-      onError: setError,
-    });
+    try {
+      await runCode({ code, canvas: canvasRef.current, onError: setError });
+      setSvgCode(formatSVGCode(canvasRef.current));
+    } catch (err) {
+      setError(err);
+    }
+    setIsRunning(false);
+  };
+
+  const handleViewToggle = showCodeView => {
+    setShowCode(showCodeView);
+    setTimeout(handleRunCode, 0);
   };
 
   return (
@@ -28,10 +44,17 @@ export default function Home() {
           setCode={setCode}
           onRun={handleRunCode}
           error={error}
+          onViewToggle={handleViewToggle}
+          isRunning={isRunning}
+          showCode={showCode}
         />
       </div>
       <div className="w-3/5">
-        <Canvas canvasRef={canvasRef} />
+        {showCode ? (
+          <CodeWindow code={svgCode} />
+        ) : (
+          <Canvas canvasRef={canvasRef} />
+        )}
       </div>
     </main>
   );
