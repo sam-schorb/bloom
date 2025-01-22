@@ -3,6 +3,7 @@
 'use client';
 
 import { useEditor } from '@/hooks/useEditor';
+import ExamplePage from '@/lib/parser/test';
 
 export default function Editor({
   code,
@@ -46,6 +47,7 @@ export default function Editor({
         className="flex-1 w-full p-4 font-mono text-sm bg-gray-50 resize-none focus:outline-none text-black placeholder:text-gray-500"
         placeholder="Enter your code here..."
       />
+      <ExamplePage />
     </div>
   );
 }
