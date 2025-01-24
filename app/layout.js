@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'bloom',
+  title: '.:: bloom ::.',
   description: 'Live-coding SVGs',
 };
 
